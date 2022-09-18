@@ -16,6 +16,14 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
+    - image: dionysus/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
     - image: dionysus/client
       context: client
       docker:
@@ -24,3 +32,4 @@ build:
         manual:
           - dest: .
             src: '**/*.js'
+
