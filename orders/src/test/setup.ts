@@ -1,9 +1,6 @@
-import request from 'supertest';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-
-import { app } from '../app';
 
 declare global {
   var signin: () => string[];
@@ -23,7 +20,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  jest.clearAllMocks()
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
 
   for (let coll of collections) {

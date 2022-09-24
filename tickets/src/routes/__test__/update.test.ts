@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../../app';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if id not found', async () => {
   const title = 'concert';
@@ -84,4 +85,24 @@ it('Update the ticket if all is valid', async () => {
 
   expect(tRes.title).toEqual('new');
   expect(tRes.price).toEqual(125);
+});
+
+it('Publishes an event', async () => {
+  const cookie = global.signin();
+  const res = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send({ title: 'title', price: 22 })
+    .expect(201);
+
+  const updateres = await request(app)
+    .put(`/api/tickets/${res.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title: 'new',
+      price: 125,
+    })
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
