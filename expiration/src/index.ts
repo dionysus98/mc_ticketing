@@ -1,10 +1,5 @@
-import mongoose from 'mongoose';
-import { app } from './app';
-import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 import { OrderCreatedListener } from './events/listeners/order-created-listener';
 import { natsWrapper } from './nats-wrapper';
-
-const PORT = 3000;
 
 console.log(
   process.env.NATS_CLUSTER_ID!,
@@ -29,18 +24,9 @@ const start = async () => {
     process.on('SIGTERM', () => natsWrapper.client.close());
 
     new OrderCreatedListener(natsWrapper.client).listen();
-    new OrderCancelledListener(natsWrapper.client).listen();
-
-    console.log('Connecting to MONGODB');
-    await mongoose.connect(process.env.MONGO_URI!);
-    console.log('Connected to MONGODB');
   } catch (err) {
     console.log(err);
   }
-
-  app.listen(PORT, () => {
-    console.log(`listening on port: ${PORT}....`);
-  });
 };
 
 start();

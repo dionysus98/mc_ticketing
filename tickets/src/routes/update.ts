@@ -3,6 +3,7 @@ import {
   NotAuthorizedError,
   requireAuth,
   validateRequest,
+  BadRequestError,
 } from '@mctickects/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
@@ -29,6 +30,10 @@ router.put(
       throw new NotFoundError();
     }
 
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
+
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
@@ -39,8 +44,9 @@ router.put(
     new TicketUpdatedPublihser(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,
-      price: +ticket.price,
+      price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
     res.send(ticket);
