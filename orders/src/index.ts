@@ -15,6 +15,7 @@ console.log(
 );
 
 const start = async () => {
+  console.log('Starting Orders');
   try {
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID!,
