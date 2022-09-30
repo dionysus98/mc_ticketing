@@ -4,6 +4,7 @@ import { app } from './app';
 const PORT = 3000;
 
 const start = async () => {
+  console.log('starting up');
   try {
     console.log('Connecting to MONGODB');
     await mongoose.connect(process.env.MONGO_URI!);
