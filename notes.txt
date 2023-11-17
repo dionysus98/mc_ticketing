@@ -1,3 +1,1 @@
-kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
-kubectl create secret generic stripe-secret --from-literal STRIPE_KEY=sk_test_51Ln0rjSGVRbey66PTZpBCf8jZBua4bw6wH1NNQKX03JLClOgwbGso7FALBb0L3Y8eG5i2iB3wR1mKYr2dM0XUnC700FrUwqScF
-kubectl port-forward <pod> <localport>:<podport>
+
